@@ -3,10 +3,12 @@
 
 export const theme = {
     colors: {
-        background: "#121212", //Color de fondo de la app negro mate
-        primary: "#D4aF37", //Color primario de la app dorado
-        secondary: "#F9F9F9", //Color secundario de la app blanco marfil
-        text: "#FFFFFF", //Color de texto de la app blanco
+        background: "#0D0D0D", //Color de fondo de la app negro mate
+        neon: "#C6FF00",
+        textPrimary: "#FFFFFF",
+        textSecondary: "#AAAAAA", //Color de texto de la app blanco
+        inputBackground: "#1A1A1A",
+        border:"#333333",
         error: "#FF0000", //Color de error de la app rojo
     },
     spacing: {
@@ -14,7 +16,7 @@ export const theme = {
         sm: 8, //Espacio medio
         md: 16, //Espacio grande
         lg: 24, //Espacio extra grande
-        xl: 32, //Espacio extra extra grande
+        xl: 45, //Espacio extra extra grande
     },
     typography: { 
         fontFamily: "Roboto", //Fuente de texto de la app
@@ -23,11 +25,5 @@ export const theme = {
             medium: 16, //Tamaño de texto medio
             large: 24, //Tamaño de texto grande
         }
-    },
-    defaults: { 
-        colors,
-        spacing,
-        typography,
-    }
-        
+    },  
 }
