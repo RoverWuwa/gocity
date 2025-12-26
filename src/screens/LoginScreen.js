@@ -2,11 +2,13 @@
 
 //Importación de dependencias
 import React, { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import { theme } from '../styles/theme';
 import GradientBackground from '../components/GradientBackground'; 
 import CustomInput from '../components/CustomInput'; 
 import CustomButton from '../components/CustomButton';
+import googleLogo from '../../assets/googleLogo.png';
+import appleLogo from '../../assets/appleLogo.png';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function LoginScreen({ navigation }) {
@@ -63,12 +65,15 @@ export default function LoginScreen({ navigation }) {
             {/* Botones sociales */}
             <View style={styles.socialContainer}>
                 <Pressable style={styles.socialButton}>
+                    <Image source={googleLogo} style={styles.socialIcon} />
                     <Text style={styles.socialText}>Google</Text>
                 </Pressable>
                 <Pressable style={styles.socialButton}>
+                    <Image source={appleLogo} style={styles.socialIcon} />
                     <Text style={styles.socialText}>Apple</Text>
                 </Pressable>
             </View>
+
         </GradientBackground>
     );
 };
@@ -136,4 +141,11 @@ const styles = StyleSheet.create({
     socialText: {
         color: theme.colors.textPrimary,
     },
+    socialIcon: {
+        width: 24,
+        height: 24,
+        marginRight: 8,
+        resizeMode: 'contain',
+    },
+      
 });

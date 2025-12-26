@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: theme.colors.neon,
     padding: theme.spacing.md,
-    borderRadius: theme.radius.md,
+    borderRadius: theme.radius.lg,
     alignItems: 'center',
     marginBottom: theme.spacing.md,
   },

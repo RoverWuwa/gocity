@@ -29,6 +29,6 @@ export const theme = {
     radius: { 
         sm: 6, 
         md: 8, 
-        lg: 12, 
+        lg: 20, 
     },
 }
