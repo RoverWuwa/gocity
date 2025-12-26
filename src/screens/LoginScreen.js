@@ -1,11 +1,20 @@
+//Pantalla de login
+
+//Importación de dependencias
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { theme } from '../styles/theme';
+import GradientBackground from '../components/GradientBackground'; 
+import CustomInput from '../components/CustomInput'; 
+import CustomButton from '../components/CustomButton';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
 
+    // Lógica del inicio de sesión
     const handleLogin = () => {
         if (email && password) {
             alert('Inicio de sesión exitoso');
@@ -16,55 +25,58 @@ export default function LoginScreen({ navigation }) {
     };
 
     return (
-        <View style={styles.container}>
+        <GradientBackground>
             <Text style={styles.title}>Explora el mundo con nosotros</Text>
-            <Text style={styles.subtitle}>Inicia Sesion para acceder a planes personalizados</Text>
+            <Text style={styles.subtitle}>Inicia sesión para acceder a planes personalizados</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder='Correo electronico'
-                placeholderTextColor={theme.colors.textSecondary}
-                value={email}
-                onChangeText={setEmail}
+            {/* Inputs globales */}
+            <CustomInput 
+                placeholder="Correo electrónico" 
+                value={email} 
+                onChangeText={setEmail} 
             />
-            <TextInput
-                style={styles.input}
-                placeholder='Contraseña'
-                placeholderTextColor={theme.colors.textSecondary}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={true}
+            <CustomInput 
+                placeholder="Contraseña" 
+                value={password} 
+                onChangeText={setPassword} 
+                secureTextEntry 
             />
 
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={handleLogin}
-            >
-                <Text style={styles.buttonText}>Comenzar</Text>
-            </TouchableOpacity>
+            {/* Checkbox */}
+            <Pressable style={styles.checkboxContainer} onPress={() => setRememberMe(!rememberMe)}>
+                <View style={[styles.checkbox, rememberMe && styles.checked]}>
+                    {rememberMe && <Icon name="check" size={18} color={theme.colors.neon} />}
+                </View>
+                <Text style={styles.checkboxLabel}>Recordarme</Text>
+            </Pressable>
 
-            <Text style={styles.altText}>- O continua con -</Text>
+            {/* Olvidé contraseña */}
+            <Pressable onPress={() => navigation.navigate('PasswordRecovery')}>
+                <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
+            </Pressable>
 
+            {/* Botón global */}
+            <CustomButton title="Comenzar" onPress={handleLogin} />
+
+            <Text style={styles.altText}>- O continúa con -</Text>
+
+            {/* Botones sociales */}
             <View style={styles.socialContainer}>
-                <TouchableOpacity style={styles.socialButton}>
+                <Pressable style={styles.socialButton}>
                     <Text style={styles.socialText}>Google</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.socialButton}>
+                </Pressable>
+                <Pressable style={styles.socialButton}>
                     <Text style={styles.socialText}>Apple</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
-
-        </View>
+        </GradientBackground>
     );
 };
 
+// Estilos propios de la pantalla
+import { StyleSheet } from 'react-native';
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.colors.background,
-        padding: 24,
-        justifyContent: "center",
-    },
     title: {
         fontSize: 28,
         color: theme.colors.textPrimary,
@@ -76,26 +88,34 @@ const styles = StyleSheet.create({
         color: theme.colors.textSecondary,
         marginBottom: 24,
     },
-    input: {
-        backgroundColor: "#1f2124",
-        color: theme.colors.textPrimary,
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 16,
-        borderEndWidth: 1,
-        borderColor: "#C6FF11",
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: -19,
     },
-    button: {
-        backgroundColor: theme.colors.neon,
-        padding: 14,
-        borderRadius: 8,
-        alignItems: "center",
-        marginBottom: 16,
+    checkbox: {
+        width: 22,
+        height: 22,
+        borderRadius: 6,
+        borderWidth: 2,
+        borderColor: theme.colors.neon,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 8,
+        backgroundColor: theme.colors.background,
     },
-    buttonText: {
-        color: theme.colors.background,
-        fontWeight: "bold",
+    checked: {
+        backgroundColor: theme.colors.inputBackground,
+    },
+    checkboxLabel: {
+        color: theme.colors.neon,
         fontSize: 16,
+    },
+    forgotPassword: {
+        color: theme.colors.neon,
+        fontSize: 14,
+        textAlign: 'right',
+        marginBottom: 20,
     },
     altText: {
         textAlign: "center",

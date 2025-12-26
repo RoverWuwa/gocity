@@ -26,4 +26,9 @@ export const theme = {
             large: 24, //Tamaño de texto grande
         }
     },  
+    radius: { 
+        sm: 6, 
+        md: 8, 
+        lg: 12, 
+    },
 }
