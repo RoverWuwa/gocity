@@ -4,11 +4,11 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { theme } from '../styles/theme';
-import GradientBackground from '../components/GradientBackground'; 
 import CustomInput from '../components/CustomInput'; 
 import CustomButton from '../components/CustomButton';
 import googleLogo from '../../assets/googleLogo.png';
 import appleLogo from '../../assets/appleLogo.png';
+import ImageBackgroundWrapper from '../components/ImageBackgroundWrapper.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function LoginScreen({ navigation }) {
@@ -27,7 +27,7 @@ export default function LoginScreen({ navigation }) {
     };
 
     return (
-        <GradientBackground>
+        <ImageBackgroundWrapper>
             <Text style={styles.title}>Explora el mundo con nosotros</Text>
             <Text style={styles.subtitle}>Inicia sesión para acceder a planes personalizados</Text>
 
@@ -74,7 +74,7 @@ export default function LoginScreen({ navigation }) {
                 </Pressable>
             </View>
 
-        </GradientBackground>
+        </ImageBackgroundWrapper>
     );
 };
 

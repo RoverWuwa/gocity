@@ -5,6 +5,8 @@ export const theme = {
     colors: {
         background: "#0D0D0D", //Color de fondo de la app negro mate
         neon: "#C6FF00",
+        buttonPrimary: "#F57C00",
+        buttonSecondary:"#1C2D4A",
         textPrimary: "#FFFFFF",
         textSecondary: "#AAAAAA", //Color de texto de la app blanco
         inputBackground: "#1A1A1A",
