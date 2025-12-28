@@ -1,0 +1,32 @@
+[
+    {
+        "key": "name",
+        "question": "Vamos a crear una cuenta. Para comenzar, ¿podria decirme su nombre?",
+        "type": "text"
+    },
+    {
+        "key": "surname",
+        "question": "Gracias!. Ahora, ¿me comparte sus apellidos? ",
+        "type": "text"
+    },
+    {
+        "key": "age",
+        "question": "Perfecto. ¿Cual es su edad?",
+        "type": "number"
+    },
+    {
+        "key": "email",
+        "question": "Necesito un correo electronico",
+        "type": "email"
+    },
+    {
+        "key": "password",
+        "question": "Ya casi terminamos!.Por favor, cree una contraseña segura para su cuenta",
+        "type": "password"
+    },
+    {
+        "key": "confirmPassword",
+        "question": "Para teminar, repita su contraseña",
+        "type": "password"
+    }
+]
