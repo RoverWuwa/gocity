@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: theme.spacing.lg,
     borderRadius: 16,
-    width: '85%',
+    width: '90%',
     alignSelf: 'center',
   },
   welcomeMessage: {

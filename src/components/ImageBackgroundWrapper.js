@@ -4,7 +4,7 @@ import { ImageBackground, StyleSheet } from 'react-native';
 export default function ImageBackgroundWrapper({ children }) {
   return (
     <ImageBackground
-      source={require("../../assets/CustomBackground.jpeg")}
+      source={require("../../assets/CustomBackground2.jpeg")}
       style={styles.container}
       resizeMode="cover"
     >

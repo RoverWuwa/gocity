@@ -16,17 +16,17 @@ export default function Appnavigator() {
         <Stack.Screen 
           name="Welcome" 
           component={WelcomeScreen} 
-          options={{ headerShown: false }} 
+          options={{ headerShown: false }}  
         />
         <Stack.Screen 
           name="Login" 
           component={LoginScreen} 
-          options={{ title: "Acceso" }} 
+          options={{ headerShown: false }} 
         />
         <Stack.Screen 
           name="Register" 
           component={RegisterScreen} 
-          options={{ title: "Crear Cuenta" }} 
+          options={{ headerShown: false }}  
         />
         <Stack.Screen 
           name="Home" 
