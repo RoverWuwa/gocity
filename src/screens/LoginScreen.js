@@ -11,14 +11,6 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin =() => {
-    if(email && password) {
-        navigation.navigate("Home");
-    }else {
-        alert("Por favor, ingrese un email y contraseña")
-    }
-  };
-
   return (
     <ImageBackgroundWrapper>
       <View style={styles.content}>
@@ -53,12 +45,12 @@ export default function LoginScreen({ navigation }) {
         </View>
 
         {/* Botón de login */}
-        <Pressable style={styles.buttonPrimary} onPress={handleLogin}>
+        <Pressable style={styles.buttonPrimary} onPress={() => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
 
         {/* Checkbox custom y ¿Olvidaste tu contraseña? */}
-        <Pressable style={styles.forgot} onPress={() => navigation.navigate('ForgotPassword')}>
+        <Pressable onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={styles.forgotLabel}>¿Olvidaste tu contraseña?</Text>
         </Pressable>
 
@@ -120,7 +112,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.colors.buttonSecondary,
-    color: theme.colors.textPrimary,
     borderRadius: 12,
     paddingHorizontal: 12,
     marginBottom: theme.spacing.md,
