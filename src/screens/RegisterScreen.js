@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ImageBackground, Pressable, Image, Alert } from 'react-native';
-import { theme } from '../styles/theme';
-import button from "../../assets/button.png";
-import dialogues from '../data/dialogues.json';
-import { useRegister } from '../hooks/useRegister'; // nuestro hook externo
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+  Alert,
+} from "react-native";
+import { theme } from "../styles/theme";
+import dialogues from "../data/dialogues.json";
+import { useRegister } from "../hooks/useRegister";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RegisterScreen({ navigation }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [userProfile, setUserProfile] = useState({});
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const { registerUser, loading } = useRegister();
 
   const currentStep = dialogues[stepIndex];
 
   const handleNext = async () => {
     if (!inputValue) {
-      Alert.alert('Campo vacío', 'Por favor, complete este campo');
+      Alert.alert("Campo vacío", "Por favor, complete este campo");
       return;
     }
 
@@ -25,7 +33,7 @@ export default function RegisterScreen({ navigation }) {
       [currentStep.key]: inputValue,
     };
     setUserProfile(updatedProfile);
-    setInputValue('');
+    setInputValue("");
 
     // Avanzar o terminar
     if (stepIndex < dialogues.length - 1) {
@@ -41,39 +49,48 @@ export default function RegisterScreen({ navigation }) {
           password: updatedProfile.password,
         });
 
-        Alert.alert('Éxito', `Cuenta creada para ${user.email}`);
-        navigation.navigate('Home');
+        Alert.alert("Éxito", `Cuenta creada para ${user.email}`);
+        navigation.navigate("Home");
       } catch (error) {
-        Alert.alert('Error', error.message);
+        Alert.alert("Error", error.message);
       }
     }
   };
 
   return (
-    <ImageBackground 
-      source={require("../../assets/CustomBackground4.jpeg")}
+    <ImageBackground
+      source={require("../../assets/CustomBackground2.jpeg")}
       style={styles.container}
+      resizeMode="cover"
     >
+      <View style={styles.overlay} />
       <View style={styles.content}>
-        <View style={styles.aiBubble}>
-          <Text style={styles.question}>{currentStep.question}</Text>
-        </View>
+        {/* Barra de progreso minimalista */}
+        <Text style={styles.progress}>
+          {stepIndex + 1} de {dialogues.length}
+        </Text>
 
+        {/* Pregunta - limpia y simple */}
+        <Text style={styles.question}>{currentStep.question}</Text>
+
+        {/* Input - limpio */}
         <TextInput
           style={styles.input}
-          placeholder="Escriba su respuesta aquí"
+          placeholder="Respuesta"
+          placeholderTextColor="#AAA"
           value={inputValue}
           onChangeText={setInputValue}
-          keyboardType={currentStep.type === 'number' ? 'numeric' : 'default'}
-          secureTextEntry={currentStep.type === 'password'}
+          keyboardType={currentStep.type === "number" ? "numeric" : "default"}
+          secureTextEntry={currentStep.type === "password"}
         />
 
+        {/* Botón - simple */}
         <Pressable
-          style={styles.buttonPress}
+          style={[styles.button, loading && styles.buttonDisabled]}
           onPress={handleNext}
           disabled={loading}
         >
-          <Image source={button} style={styles.buttonIcon} />
+          <Text style={styles.buttonText}>Siguiente</Text>
         </Pressable>
       </View>
     </ImageBackground>
@@ -81,55 +98,58 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: {
-    alignItems: 'center',
-    padding: theme.spacing.lg,
-    width: '95%',
-    alignSelf: 'center',
-    marginTop: "70%",
+  container: {
+    flex: 1,
+    justifyContent: "center",
   },
-  aiBubble: { alignItems: "center", marginBottom: 20 },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+  content: {
+    alignItems: "center",
+    paddingHorizontal: 30,
+    zIndex: 1,
+  },
+  progress: {
+    color: "#FFF",
+    fontSize: 13,
+    fontWeight: "500",
+    marginBottom: 40,
+    opacity: 0.9,
+  },
   question: {
-    fontFamily: "WorkSans-Regular",
-    fontSize: 29,
-    color: theme.colors.inputBackground,
-    marginBottom: theme.spacing.lg,
-    textAlign: 'center',
+    fontSize: 22,
+    color: "#FFF",
+    textAlign: "center",
+    fontWeight: "600",
+    marginBottom: 30,
+    lineHeight: 28,
   },
   input: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: "transparent",
-    borderBottomWidth: 2,
-    borderBottomColor: theme.colors.buttonSecondary,
-    color: theme.colors.inputBackground,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    marginBottom: 40,
-    width: '100%',
-    minHeight: 52,
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#1C2D4A",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    borderRadius: 10,
+    marginBottom: 24,
+    fontWeight: "500",
   },
-  buttonPress: {
-    position: "absolute",
-    backgroundColor: theme.colors.buttonSecondary,
-    padding: 12,
-    borderRadius: 50,
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
-    top: 300,
-    left: 250,
+  button: {
+    backgroundColor: "#F57C00",
+    paddingHorizontal: 40,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 10,
   },
-  buttonIcon: {
-    width: 60,
-    height: 60,
-    resizeMode: 'contain',
+  buttonText: {
+    color: "#FFF",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
 });
