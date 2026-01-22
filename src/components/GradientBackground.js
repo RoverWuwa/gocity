@@ -1,8 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Animated, Text, View, StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React, { useRef, useEffect, useState } from "react";
+import { Animated, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function QuestionBox({ currentStep }) {
+export default function GradientBackground({ currentStep }) {
+  if (!currentStep || !currentStep.question) {
+    return null;
+  }
+
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const [textSize, setTextSize] = useState({ width: 0, height: 0 });
 
@@ -19,7 +23,7 @@ export default function QuestionBox({ currentStep }) {
           duration: 1000,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
   }, [scaleAnim]);
 
@@ -27,11 +31,11 @@ export default function QuestionBox({ currentStep }) {
     <Animated.View
       style={{
         transform: [{ scale: scaleAnim }],
-        alignSelf: 'center',
+        alignSelf: "center",
       }}
     >
       <LinearGradient
-        colors={['#FFA500', '#FFFFFF']}
+        colors={["#FFA500", "#FFFFFF"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{
@@ -40,8 +44,8 @@ export default function QuestionBox({ currentStep }) {
           paddingVertical: 12,
           width: textSize.width + 40, // se adapta al texto
           height: textSize.height + 24,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Text
@@ -60,9 +64,6 @@ export default function QuestionBox({ currentStep }) {
 
 const styles = StyleSheet.create({
   question: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
