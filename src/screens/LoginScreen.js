@@ -1,22 +1,61 @@
 // Importación de dependencias
-import React, { useState } from 'react';
-import { View, Text, Pressable, Image, StyleSheet, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { theme } from '../styles/theme';
-import ImageBackgroundWrapper from '../components/ImageBackgroundWrapper';
-import googleLogo from '../../assets/googleLogo.png';
-import appleLogo from '../../assets/appleLogo.png';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  Image,
+  StyleSheet,
+  TextInput,
+  Alert,
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { theme } from "../styles/theme";
+import ImageBackgroundWrapper from "../components/ImageBackgroundWrapper";
+import googleLogo from "../../assets/googleLogo.png";
+import appleLogo from "../../assets/appleLogo.png";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signIn, loading } = useAuth();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Por favor, ingrese un email y contraseña");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert("Error", "Por favor, ingrese un email válido");
+      return;
+    }
+
+    try {
+      await signIn(email, password);
+      // Wait a bit for session to be set
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 1000);
+    } catch (error) {
+      Alert.alert("Error", "Email o contraseña incorrectos");
+    }
+  };
 
   return (
     <ImageBackgroundWrapper>
       <View style={styles.content}>
         <View style={styles.sessionMessage}>
           <Text style={styles.title}>Inicia sesión</Text>
-          <Text style={styles.subtitle}>Inicia sesión para acceder a planes personalizados</Text>
+          <Text style={styles.subtitle}>
+            Inicia sesión para acceder a planes personalizados
+          </Text>
         </View>
 
         {/* Input de correo con ícono */}
@@ -45,14 +84,14 @@ export default function LoginScreen({ navigation }) {
         </View>
 
         {/* Botón de login */}
-        <Pressable style={styles.buttonPrimary} onPress={() => navigation.navigate('Home')}>
+        <Pressable style={styles.buttonPrimary} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
 
         {/* Checkbox custom y ¿Olvidaste tu contraseña? */}
-        <Pressable onPress={() => navigation.navigate('ForgotPassword')}>
+        {/* <Pressable style={styles.forgot} onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={styles.forgotLabel}>¿Olvidaste tu contraseña?</Text>
-        </Pressable>
+        </Pressable> */}
 
         {/* Separador */}
         <Text style={styles.orText}>- O inicia sesión con -</Text>
@@ -73,7 +112,7 @@ export default function LoginScreen({ navigation }) {
         {/* Registro */}
         <View style={styles.signupRow}>
           <Text style={styles.signupText}>¿No tienes cuenta?</Text>
-          <Pressable onPress={() => navigation.navigate('Register')}>
+          <Pressable onPress={() => navigation.navigate("Register")}>
             <Text style={styles.signupLink}>Regístrate</Text>
           </Pressable>
         </View>
@@ -85,38 +124,46 @@ export default function LoginScreen({ navigation }) {
 // Estilos
 const styles = StyleSheet.create({
   content: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: theme.spacing.lg,
-    width: '95%',
-    alignSelf: 'center',
+    width: "95%",
+    alignSelf: "center",
   },
   sessionMessage: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 100,
     marginBottom: 130,
   },
   title: {
     fontSize: 48,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.textPrimary,
   },
   subtitle: {
     fontSize: 16,
     color: theme.colors.textPrimary,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: theme.spacing.xs,
   },
 
   // Inputs
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.buttonSecondary,
-    borderRadius: 12,
-    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    color: theme.colors.textPrimary,
+    borderRadius: 16,
+    paddingHorizontal: 16,
     marginBottom: theme.spacing.md,
-    width: '100%',
-    minHeight: 52,
+    width: "100%",
+    minHeight: 56,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
   icon: {
     marginRight: 8,
@@ -130,15 +177,24 @@ const styles = StyleSheet.create({
   // Boton de Login
   buttonPrimary: {
     backgroundColor: theme.colors.buttonPrimary,
-    paddingVertical: 12,
-    borderRadius: 12,
-    width: '100%',
-    alignItems: 'center',
+    paddingVertical: 14,
+    borderRadius: 16,
+    width: "100%",
+    alignItems: "center",
     marginBottom: theme.spacing.md,
+    shadowColor: theme.colors.buttonPrimary,
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.2)",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+    letterSpacing: 0.5,
   },
 
   // forgot
@@ -151,44 +207,46 @@ const styles = StyleSheet.create({
   // Social
   orText: {
     color: theme.colors.textPrimary,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: theme.spacing.sm,
   },
   socialRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
     marginBottom: theme.spacing.md,
   },
   socialButton: {
-    backgroundColor: theme.colors.buttonSecondary,
-    padding: 12,
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    padding: 14,
     borderRadius: 50,
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    width: 58,
+    height: 58,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    shadowColor: "#000",
     shadowOpacity: 0.15,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
   socialIcon: {
     width: 24,
     height: 24,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   facebookText: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#3b5998',
+    fontWeight: "bold",
+    color: "#3b5998",
   },
 
   // Registro
   signupRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: theme.spacing.md,
   },
   signupText: {
@@ -197,6 +255,6 @@ const styles = StyleSheet.create({
   signupLink: {
     color: theme.colors.buttonPrimary,
     marginLeft: 4,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
