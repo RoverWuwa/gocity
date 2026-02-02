@@ -14,38 +14,20 @@ import { theme } from "../styles/theme";
 import ImageBackgroundWrapper from "../components/ImageBackgroundWrapper";
 import googleLogo from "../../assets/googleLogo.png";
 import appleLogo from "../../assets/appleLogo.png";
-import { useAuth } from "../hooks/useAuth";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, loading } = useAuth();
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleLogin = async () => {
+  // Login de prueba: acepta cualquier texto
+  const handleLogin = () => {
     if (!email || !password) {
-      Alert.alert("Error", "Por favor, ingrese un email y contraseña");
+      Alert.alert("Error", "Por favor, escribe algo en ambos campos");
       return;
     }
 
-    if (!validateEmail(email)) {
-      Alert.alert("Error", "Por favor, ingrese un email válido");
-      return;
-    }
-
-    try {
-      await signIn(email, password);
-      // Wait a bit for session to be set
-      setTimeout(() => {
-        navigation.navigate("Home");
-      }, 1000);
-    } catch (error) {
-      Alert.alert("Error", "Email o contraseña incorrectos");
-    }
+    // Simulación de login exitoso
+    navigation.navigate("Home");
   };
 
   return (
@@ -87,11 +69,6 @@ export default function LoginScreen({ navigation }) {
         <Pressable style={styles.buttonPrimary} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-
-        {/* Checkbox custom y ¿Olvidaste tu contraseña? */}
-        {/* <Pressable style={styles.forgot} onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={styles.forgotLabel}>¿Olvidaste tu contraseña?</Text>
-        </Pressable> */}
 
         {/* Separador */}
         <Text style={styles.orText}>- O inicia sesión con -</Text>
@@ -195,13 +172,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     letterSpacing: 0.5,
-  },
-
-  // forgot
-  forgotLabel: {
-    textDecorationLine: "underline",
-    color: theme.colors.textPrimary,
-    marginBottom: 20,
   },
 
   // Social
